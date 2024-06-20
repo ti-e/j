@@ -2,7 +2,6 @@ name: Delete Old Files
 
 on:
   schedule:
-    # 每天运行一次。你可以根据需要调整时间间隔。
     - cron: '0 0 * * *'
 
 jobs:
