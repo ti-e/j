@@ -33,4 +33,4 @@ jobs:
         git commit -m "Delete files older than 7 days"
         git push
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.OKGITHUB_TOKEN }}
