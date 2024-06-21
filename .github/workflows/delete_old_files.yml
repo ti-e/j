@@ -1,4 +1,4 @@
-name: Delete Files Older than 2 Weeks
+name: Delete Files Older
 
 on:
   schedule:
@@ -12,13 +12,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        repository: ti-e/J  # 指定仓库为 ti-e 下的 J 仓库
-        token: ${{ secrets.OKGITHUB_TOKEN }}  # 使用默认的 GITHUB_TOKEN 访问令牌
 
     - name: Delete files older than 2 weeks
       run: |
         echo "Finding and deleting files older than 2 weeks"
-        cd J  # 进入 J 仓库目录
-        find . -type f ! -newermt '2 weeks ago' -exec echo "Deleting file: {}" \; -exec rm -f {} \;
+        find $GITHUB_WORKSPACE/J -type f ! -newermt '2 weeks ago' -exec echo "Deleting file: {}" \; -exec rm -f {} \;
         echo "Files older than 2 weeks have been deleted"
