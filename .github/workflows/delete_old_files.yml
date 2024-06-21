@@ -1,9 +1,9 @@
-name: Delete Old Files
+name: Delete Files Older than 10 Days
 
 on:
   schedule:
-    - cron: '50 3 * * *'  # 每天北京时间11:50运行
-  workflow_dispatch:  # 添加手动触发事件
+    - cron: '50 3 * * *'  
+  workflow_dispatch:  
 
 jobs:
   delete_old_files:
@@ -23,7 +23,7 @@ jobs:
       run: |
         git config --global user.name 'ti-e'
         git config --global user.email '${{ secrets.OKEMail }}'
-        git add .
+        git add -A  # 添加所有更改，包括删除的文件
         git commit -m "Delete files older than 10 days" || echo "Nothing to commit"
         git push
       env:
