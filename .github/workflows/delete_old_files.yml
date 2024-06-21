@@ -2,9 +2,8 @@ name: Delete Files Older than 10 Days
 
 on:
   schedule:
-    - cron: '50 3 * * *'  # 每天北京时间11:50运行
-  workflow_dispatch:  # 添加手动触发事件
-
+    - cron: '50 3 * * *'  
+  workflow_dispatch: 
 jobs:
   delete_old_files:
     runs-on: ubuntu-latest
