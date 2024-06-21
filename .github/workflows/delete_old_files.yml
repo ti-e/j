@@ -1,4 +1,4 @@
-name: Delete Files Older
+name: Delete Files Older than 2 Weeks
 
 on:
   schedule:
@@ -13,8 +13,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Print working directory
+      run: pwd
+
+    - name: List files in working directory
+      run: ls -la
+
     - name: Delete files older than 2 weeks
       run: |
         echo "Finding and deleting files older than 2 weeks"
-        find $GITHUB_WORKSPACE/J -type f ! -newermt '2 weeks ago' -exec echo "Deleting file: {}" \; -exec rm -f {} \;
+        find . -type f ! -newermt '2 weeks ago' -exec echo "Deleting file: {}" \; -exec rm -f {} \;
         echo "Files older than 2 weeks have been deleted"
+
+    - name: List files after deletion
+      run: ls -la
