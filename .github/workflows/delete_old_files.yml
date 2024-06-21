@@ -2,7 +2,8 @@ name: Delete Old Files
 
 on:
   schedule:
-    - cron: '38 11 * * *'  # 每天中午11:38运行
+    - cron: '50 3 * * *'  
+  workflow_dispatch:  
 
 jobs:
   delete_old_files:
@@ -12,9 +13,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: List all files
+      run: |
+        echo "Listing all files before deletion"
+        find . -type f -print
+
+    - name: List files older than 10 days
+      run: |
+        echo "Listing files older than 10 days"
+        find . -type f -mtime +10 -print
+
     - name: Delete files older than 10 days
       run: |
-        # Find and delete files older than 10 days
+        echo "Deleting files older than 10 days"
         find . -type f -mtime +10 -exec rm -f {} \;
 
     - name: Commit and push changes
