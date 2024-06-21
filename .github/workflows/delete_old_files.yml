@@ -1,4 +1,4 @@
-name: Delete Files Older than 10 Days
+name: Delete Files Older than 2 Weeks
 
 on:
   schedule:
@@ -13,8 +13,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Delete files older than 10 days
+    - name: Delete files older than 2 weeks
       run: |
-        echo "Finding and deleting files older than 10 days"
-        find . -type f -mtime +9 -exec rm -f {} \;
-        echo "Files older than 10 days have been deleted"
+        echo "Finding and deleting files older than 2 weeks"
+        find . -type f ! -newermt '2 weeks ago' -exec echo "Deleting file: {}" \; -exec rm -f {} \;
+        echo "Files older than 2 weeks have been deleted"
