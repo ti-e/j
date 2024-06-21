@@ -2,8 +2,8 @@ name: Delete Old Files
 
 on:
   schedule:
-    - cron: '50 3 * * *'  
-  workflow_dispatch:  
+    - cron: '50 3 * * *'  # 每天北京时间11:50运行
+  workflow_dispatch:  # 添加手动触发事件
 
 jobs:
   delete_old_files:
@@ -13,27 +13,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: List all files
-      run: |
-        echo "Listing all files before deletion"
-        find . -type f -print
-
-    - name: List files older than 10 days
-      run: |
-        echo "Listing files older than 10 days"
-        find . -type f -mtime +10 -print
-
     - name: Delete files older than 10 days
       run: |
-        echo "Deleting files older than 10 days"
+        echo "Finding and deleting files older than 10 days"
         find . -type f -mtime +10 -exec rm -f {} \;
+        echo "Files older than 10 days have been deleted"
 
     - name: Commit and push changes
       run: |
         git config --global user.name 'ti-e'
         git config --global user.email '${{ secrets.OKEMail }}'
         git add .
-        git commit -m "Delete files older than 10 days"
+        git commit -m "Delete files older than 10 days" || echo "Nothing to commit"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.OKGITHUB_TOKEN }}
