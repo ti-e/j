@@ -2,8 +2,8 @@ name: Delete Files Older than 10 Days
 
 on:
   schedule:
-    - cron: '50 3 * * *'  
-  workflow_dispatch:  
+    - cron: '50 3 * * *'  # 每天北京时间11:50运行
+  workflow_dispatch:  # 添加手动触发事件
 
 jobs:
   delete_old_files:
@@ -16,15 +16,22 @@ jobs:
     - name: Delete files older than 10 days
       run: |
         echo "Finding and deleting files older than 10 days"
-        find . -type f -mtime +10 -exec rm -f {} \;
+        find . -type f -mtime +9 -exec rm -f {} \;
         echo "Files older than 10 days have been deleted"
 
-    - name: Commit and push changes
+    - name: Configure Git
       run: |
         git config --global user.name 'ti-e'
         git config --global user.email '${{ secrets.OKEMail }}'
-        git add -A  # 添加所有更改，包括删除的文件
+
+    - name: Commit changes
+      run: |
+        git add -A
         git commit -m "Delete files older than 10 days" || echo "Nothing to commit"
-        git push
+
+    - name: Push changes to ti-e/j
+      run: |
+        git push https://github.com/ti-e/j.git HEAD:main
       env:
-        GITHUB_TOKEN: ${{ secrets.OKGITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.OKGITHUB_TOKEN }} 
+        PERSONAL_ACCESS_TOKEN: ${{ secrets.OKUSER_TOKEN }}  # 使用个人访问令牌进行推送
